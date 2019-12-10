@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+
+    <!--android Q-->
+    <external-path
+        name="files"
+        path="Android/data/com.margin.snap/files" />
+    <!--before android Q-->
+    <external-path
+        name="snap_files"
+        path="com.margin.snap/snap_files" />
+
+</paths>
