@@ -1,9 +1,11 @@
-package com.margin.snap;
+package com.margin.snap.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+
+import com.margin.snap.utils.ApplicationUtils;
 
 /**
  * Created by : mr.lu

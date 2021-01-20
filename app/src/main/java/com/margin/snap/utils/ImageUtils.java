@@ -1,8 +1,10 @@
-package com.margin.snap;
+package com.margin.snap.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+
+import com.margin.snap.MainActivity;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

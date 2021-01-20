@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_bg"
     tools:context=".MainActivity">
 
 
@@ -19,8 +20,8 @@
 
     <ImageView
         android:id="@+id/iv_main_target"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/main_icon_width"
+        android:layout_height="@dimen/main_icon_height"
         android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher_round"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,6 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_main_testcontainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -36,41 +38,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/btn_main_camera"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="camera"
-            app:layout_constraintBottom_toTopOf="@+id/btn_main_topermission"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btn_main_topermission"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="to permission"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btn_main_album"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="to album"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btn_main_device_info"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="DEVICE INFO"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

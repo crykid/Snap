@@ -1,6 +1,7 @@
 package com.margin.snap;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.margin.snap.framwork.BaseTopActivity;
@@ -13,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DeviceInfoActivity extends BaseTopActivity {
-
+    private static final String TAG = "DeviceInfoActivity";
     @BindView(R.id.tv_device_info)
     TextView tvDeviceInfo;
     @BindView(R.id.tv_device_content)
@@ -29,6 +30,7 @@ public class DeviceInfoActivity extends BaseTopActivity {
         final String content = getContent();
 
         tvDeviceContent.setText(content);
+        Log.d(TAG, "onCreate: " + content);
     }
 
     private String getContent() {

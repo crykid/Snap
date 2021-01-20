@@ -1,4 +1,4 @@
-package com.margin.snap;
+package com.margin.snap.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

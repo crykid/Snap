@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:background="#8a8a8a"
             android:padding="10dp"
+
             android:lineHeight="5dp"
             android:textColor="#ffffff"
             tools:text="HUAWEI meta 30 Pro" />

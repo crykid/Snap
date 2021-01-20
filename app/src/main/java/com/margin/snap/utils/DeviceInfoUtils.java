@@ -3,17 +3,13 @@ package com.margin.snap.utils;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -22,12 +18,7 @@ import android.os.StatFs;
 import android.os.SystemClock;
 import android.os.storage.StorageManager;
 import android.provider.Settings;
-import android.telephony.CellLocation;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
-import android.telephony.cdma.CdmaCellLocation;
-import android.telephony.gsm.GsmCellLocation;
 import android.text.BidiFormatter;
 import android.text.TextDirectionHeuristics;
 import android.text.TextUtils;
@@ -37,7 +28,6 @@ import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 
-import com.margin.snap.ApplicationUtils;
 import com.margin.snap.framwork.SnapConfiguration;
 import com.margin.snap.framwork.SnapConfigurator;
 
@@ -62,7 +52,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -194,30 +183,7 @@ public class DeviceInfoUtils {
      **/
     private static String getStoragePath(Context context, int type) {
 
-        StorageManager sm = (StorageManager) context
-                .getSystemService(Context.STORAGE_SERVICE);
-        try {
-            Method getPathsMethod = sm.getClass().getMethod("getVolumePaths",
-                    null);
-            String[] path = (String[]) getPathsMethod.invoke(sm, null);
 
-            switch (type) {
-                case INTERNAL_STORAGE:
-                    return path[type];
-                case EXTERNAL_STORAGE:
-                    if (path.length > 1) {
-                        return path[type];
-                    } else {
-                        return null;
-                    }
-
-                default:
-                    break;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return null;
     }
 

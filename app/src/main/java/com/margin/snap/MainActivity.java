@@ -13,10 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -24,6 +26,10 @@ import androidx.core.content.PermissionChecker;
 
 import com.margin.snap.framwork.BaseTopActivity;
 import com.margin.snap.framwork.SnapConfigurator;
+import com.margin.snap.utils.FileUtils;
+import com.margin.snap.utils.PhoneUtils;
+import com.margin.snap.utils.TestMethodUtils;
+import com.margin.snap.utils.testmethod.ClickTest;
 import com.zxy.tiny.Tiny;
 import com.zxy.tiny.callback.FileBatchCallback;
 import com.zxy.tiny.callback.FileCallback;
@@ -31,17 +37,22 @@ import com.zxy.tiny.callback.FileCallback;
 import java.io.File;
 import java.util.UUID;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseTopActivity implements View.OnClickListener {
+public class MainActivity extends BaseTopActivity {
     private static final String TAG = "MainActivity";
 
-    Button btnCamera;
+
     ImageView ivTarget;
     TextView tvDeviceId;
+
+    @BindView(R.id.ll_main_testcontainer)
+    LinearLayoutCompat mLlTestContainer;
     Uri mUri = null;
     String path = null, parentPath = null;
+
     private BroadcastReceiver batteryReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -59,16 +70,12 @@ public class MainActivity extends BaseTopActivity implements View.OnClickListene
 
         //获取电量
         registerReceiver(batteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        TestMethodUtils.find(this, mLlTestContainer);
 
 
-        btnCamera = findViewById(R.id.btn_main_camera);
         ivTarget = findViewById(R.id.iv_main_target);
         tvDeviceId = findViewById(R.id.tv_main_device_id);
 
-        btnCamera.setOnClickListener(this);
-
-        findViewById(R.id.btn_main_topermission).setOnClickListener(this);
-        findViewById(R.id.btn_main_album).setOnClickListener(this);
 
 //        initSnapDir();
 
@@ -146,33 +153,37 @@ public class MainActivity extends BaseTopActivity implements View.OnClickListene
         startActivityForResult(intent, 100);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
 
-            case R.id.btn_main_camera:
+    @ClickTest("camera")
+    public void opnCamera() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
 
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PermissionChecker.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
-                } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PermissionChecker.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-
-                } else {
-                    openCamera();
-                }
-                break;
-            case R.id.btn_main_topermission:
-
-                startActivity(new Intent(this, PermissionActivity.class));
-                break;
-
-            case R.id.btn_main_album:
-                startActivity(new Intent(this, OpenAlbumActivity.class));
-
-                break;
-            default:
-                break;
+        } else {
+            openCamera();
         }
+    }
+
+    @ClickTest("permission")
+    public void permission() {
+        startActivity(new Intent(this, PermissionActivity.class));
+    }
+
+    @ClickTest()
+    public void openAlbum() {
+        startActivity(new Intent(this, OpenAlbumActivity.class));
+    }
+
+    @ClickTest
+    public void deviceInfo() {
+        startActivity(new Intent(this, DeviceInfoActivity.class));
+    }
+
+    @ClickTest
+    public void theme() {
+        startActivity(new Intent(this, ThemeTestActivity.class));
     }
 
     @Override
@@ -180,11 +191,6 @@ public class MainActivity extends BaseTopActivity implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100) {
-
-//            Bitmap bm = ImageUtils.getBitmapFormUri(this, mUri);
-//            //2.压缩图片；
-//            bm = ImageUtils.compressImage(bm, 300);
-//            ImageUtils.savePic(bm, path);
 
             Tiny.FileCompressOptions options = new Tiny.FileCompressOptions();
             options.isKeepSampling = false;
@@ -202,18 +208,6 @@ public class MainActivity extends BaseTopActivity implements View.OnClickListene
 
             Log.d(TAG, "callback1: AAAA");
 
-//            Tiny.getInstance().source(mUri).asFile().withOptions(options).compress(new FileCallback() {
-//                @Override
-//                public void callback(boolean isSuccess, String outfile, Throwable t) {
-//                    Log.d(TAG, "callback2: IS_SUCCESS = " + isSuccess + " outfile = " + outfile);
-//                    File file = new File(path);
-//                    Log.d(TAG, "callback2: " + file.length()/1024);
-//                }
-//            });
-
-
-//            ivTarget.setImageBitmap(bm);
-
 
         }
     }
@@ -230,14 +224,11 @@ public class MainActivity extends BaseTopActivity implements View.OnClickListene
         });
     }
 
-    @OnClick({R.id.btn_main_device_info})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-
-            case R.id.btn_main_device_info:
-
-                startActivity(new Intent(this, DeviceInfoActivity.class));
-                break;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (batteryReceiver != null) {
+            unregisterReceiver(batteryReceiver);
         }
     }
 }

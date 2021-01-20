@@ -4,7 +4,9 @@ import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.margin.snap.ApplicationUtils;
+import com.margin.snap.theme.SnapThemeManager;
+import com.margin.snap.utils.ApplicationUtils;
+import com.margin.snap.theme.ThemeEngineFactory;
 import com.zxy.tiny.Tiny;
 
 /**
@@ -23,5 +25,6 @@ public class SnapApplication extends Application {
         SnapConfigurator.getInstance()
                 .appContext(this)
                 .handler(new Handler(Looper.getMainLooper()));
+        SnapThemeManager.getInstance().init(this, ThemeEngineFactory.ENGINE_SYSTEM);
     }
 }

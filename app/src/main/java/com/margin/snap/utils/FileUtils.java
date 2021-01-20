@@ -1,9 +1,11 @@
-package com.margin.snap;
+package com.margin.snap.utils;
 
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+
+import com.margin.snap.DirConstants;
 
 import java.io.File;
 
